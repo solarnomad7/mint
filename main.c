@@ -7,17 +7,12 @@ static char* read_bytes(char* source);
 
 int main(int argc, char **argv)
 {
-    //printf("Starting...\n");
     char *data = read_bytes(argv[1]);
 
-    //printf("Initializing VM...\n");
     VM_Core vm;
     uint16_t initial_ptr = init_vm((int8_t*)data, &vm);
-    //display_mem(&vm);
-    //printf("Evaluating code...\n");
     start_eval((vm.heap.pointers[initial_ptr])->address, &vm);
 
-    //printf("Freeing memory...\n");
     free(data);
     free_mem(&vm);
 }

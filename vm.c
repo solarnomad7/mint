@@ -88,7 +88,6 @@ void start_eval(address_t address, VM_Core *vm)
     int loop_depth = 0;
     while (1)
     {
-        //printf("top stack value: %d\n", vm->stack[vm->sp]);
         int8_t* op = (int8_t*)(vm->heap.mem[address]);
         if (*op == END_DEFINE)
         {
