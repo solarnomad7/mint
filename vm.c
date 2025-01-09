@@ -46,6 +46,7 @@ ptrid_t init_vm(int8_t data[], VM_Core *vm)
         {
             i++;
             int8_t type = data[i++];
+            if (type == 3) type = 2; // Convert pointer type to int16 type since they're functionally the same so far
 
             int8_t tmp_id = data[i++];
             curr_ptr = c_to_s(tmp_id, data[i++]);
