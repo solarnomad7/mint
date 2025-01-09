@@ -2,3 +2,7 @@
 *.un~
 *.exe
 *.json
+*.code-workspace
+*.mint
+*.mx
+mint

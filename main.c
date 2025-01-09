@@ -10,8 +10,17 @@ int main(int argc, char **argv)
     char *data = read_bytes(argv[1]);
 
     VM_Core vm;
-    uint16_t initial_ptr = init_vm((int8_t*)data, &vm);
-    start_eval((vm.heap.pointers[initial_ptr])->address, &vm);
+    ptrid_t initial_ptr = init_vm((int8_t*)data, &vm);
+    int result = eval((vm.ram.pointers[initial_ptr]).address, &vm);
+    switch (result)
+    {
+        case SEGMENTATION_FAULT:
+            printf("MINT: Segmentation fault\n");
+            break;
+        case MAX_RECURSION_DEPTH:
+            printf("MINT: Reached maximum recursion depth\n");
+            break;
+    }
 
     free(data);
     free_mem(&vm);
