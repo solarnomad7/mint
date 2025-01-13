@@ -96,7 +96,6 @@ int eval(address_t address, VM_Core *vm)
                 break;
             }
             case PUSH8:     { PUSH(get_mem(++address)); break; }
-            case PUSHPTR:
             case PUSH16:    {
                 int8_t a = get_mem(++address);
                 PUSH(c_to_s(a, get_mem(++address)));
@@ -107,18 +106,6 @@ int eval(address_t address, VM_Core *vm)
                 int8_t b = get_mem(++address);
                 int8_t c = get_mem(++address);
                 PUSH(c_to_i(a, b, c, get_mem(++address)));
-                break;
-            }
-            case ARR8:      { int8_t i; while ((i = get_mem(++address)) != ENDLIT) { PUSH(i); } break; }
-            case ARR16:     { int8_t a; while ((a = get_mem(++address)) != ENDLIT) { PUSH(c_to_s(a, get_mem(++address))); } break; }
-            case ARR32:     {
-                int8_t a;
-                while ((a = get_mem(++address)) != ENDLIT)
-                {
-                    int8_t b = get_mem(++address);
-                    int8_t c = get_mem(++address);
-                    PUSH(c_to_i(a, b, c, get_mem(++address)));
-                }
                 break;
             }
             case CALL:      {
