@@ -46,13 +46,17 @@ ptrid_t init_vm(int8_t data[], VM_Core *vm)
         {
             i++;
             int8_t type = data[i++];
-            if (type == 3) type = 2; // Convert pointer type to int16 type since they're functionally the same so far
+
+            int8_t tmp_size = data[i++];
+            uint16_t size = c_to_s(tmp_size, data[i++]);
 
             int8_t tmp_id = data[i++];
             curr_ptr = c_to_s(tmp_id, data[i++]);
 
-            int8_t tmp_size = data[i++];
-            uint16_t size = c_to_s(tmp_size, data[i++]);
+            int8_t tmp_ptrs = data[i++];
+            uint16_t num_pointers = c_to_s(tmp_ptrs, data[i++]);
+
+            i += num_pointers * 2;
 
             vm->ram.pointers[curr_ptr].address = next_free_addr;
             vm->ram.pointers[curr_ptr].type = type;

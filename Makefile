@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS := -Wall -Wextra -g
+CFLAGS := -Wall -Wextra
 BINARY := mint
 
 $(BINARY): main.o vm.o
