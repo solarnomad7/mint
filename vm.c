@@ -3,20 +3,38 @@
 
 #include "vm.h"
 #include "op_table.h"
+#include "interfaces/interfaces.h"
 
 #define PUSH(x)     if (vm->sp == STACK_SIZE-1) { return STACK_OVERFLOW; } vm->sp++; vm->stack[vm->sp] = x
 #define POP(x)      if (vm->sp == -1) { return STACK_UNDERFLOW; } int32_t x = vm->stack[vm->sp--]
 #define get_mem(a)  vm->ram.mem[a]
 
-int32_t load_mem(ptrid_t ptr, uint16_t idx, VM_Memory *ram);
-void store_mem(ptrid_t ptr, uint16_t idx, int32_t val, VM_Memory *ram);
+void handle_interfaces(VM_Memory* ram);
 
 static int16_t c_to_s(int8_t a, int8_t b);
 static int32_t c_to_i(int8_t a, int8_t b, int8_t c, int8_t d);
 
-ptrid_t init_vm(int8_t data[], VM_Core *vm)
+const uint16_t iPointerSizes[] =
+{
+    [PTR_TERMINAL_FN] =     1,
+    [PTR_TERMINAL_ARGS] =   1,
+    [PTR_TERMINAL_READC] =  1,
+    [PTR_TERMINAL_WRITEC] = 1,
+};
+
+const Type iPointerTypes[] = 
+{
+    [PTR_TERMINAL_FN] =     INT8,
+    [PTR_TERMINAL_ARGS] =   INT16,
+    [PTR_TERMINAL_READC] =  INT8,
+    [PTR_TERMINAL_WRITEC] = INT8,
+};
+
+ptrid_t init_vm(int8_t data[], VM_Core *vm, char **argv)
 {
     if (!(data[0] == 'M' && data[1] == 'I' && data[2] == 'N' && data[3] == 'T')) return -1; // File validity check
+
+    vm->ram.argv = argv;
 
     vm->sp = -1;
     vm->rp = -1;
@@ -40,6 +58,16 @@ ptrid_t init_vm(int8_t data[], VM_Core *vm)
     ptrid_t curr_ptr = 0;
     address_t next_free_addr = 0;
 
+    // Initialize interface pointers
+    for (curr_ptr = 0; curr_ptr < NUM_INTERFACE_PTRS; curr_ptr++)
+    {
+        vm->ram.pointers[curr_ptr].address = next_free_addr;
+        vm->ram.pointers[curr_ptr].type = iPointerTypes[curr_ptr];
+        vm->ram.pointers[curr_ptr].size = iPointerSizes[curr_ptr];
+
+        next_free_addr += iPointerSizes[curr_ptr];
+    }
+
     while (data[i] != END_FILE)
     {
         if (data[i] == DEF)
@@ -49,6 +77,8 @@ ptrid_t init_vm(int8_t data[], VM_Core *vm)
 
             int8_t tmp_size = data[i++];
             uint16_t size = c_to_s(tmp_size, data[i++]);
+
+            i += 2;
 
             int8_t tmp_id = data[i++];
             curr_ptr = c_to_s(tmp_id, data[i++]);
@@ -194,8 +224,15 @@ int eval(address_t address, VM_Core *vm)
             case SRIGHT:    { POP(a); POP(b); PUSH(b >> a); break; }
         }
         address++;
+
+        handle_interfaces(&(vm->ram));
     }
     return 0;
+}
+
+void handle_interfaces(VM_Memory* ram)
+{
+    iterm_update(ram);
 }
 
 int32_t load_mem(ptrid_t ptr, uint16_t idx, VM_Memory *ram)

@@ -1,16 +1,19 @@
 CC := gcc
-CFLAGS := -Wall -Wextra
+CFLAGS := -Wall -Wextra -g
 BINARY := mint
 
-$(BINARY): main.o vm.o
-	$(CC) $(CFLAGS) vm.o main.o -o $(BINARY)
+$(BINARY): main.o vm.o terminal.o
+	$(CC) $(CFLAGS) terminal.o vm.o main.o -o $(BINARY)
 	rm -f *.o
 
 main.o: main.c
 	$(CC) $(CFLAGS) -c main.c -o main.o
 
-vm.o: vm.c vm.h op_table.h
+vm.o: vm.c
 	$(CC) $(CFLAGS) -c vm.c -o vm.o
+
+terminal.o: interfaces/terminal.c
+	$(CC) $(CFLAGS) -c interfaces/terminal.c -o terminal.o
 
 clean:
 	rm -f $(BINARY) *.o

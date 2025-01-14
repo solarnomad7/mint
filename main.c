@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     char *data = read_bytes(argv[1]);
 
     VM_Core vm;
-    ptrid_t initial_ptr = init_vm((int8_t*)data, &vm);
+    ptrid_t initial_ptr = init_vm((int8_t*)data, &vm, argv);
     int result = eval((vm.ram.pointers[initial_ptr]).address, &vm);
     switch (result)
     {

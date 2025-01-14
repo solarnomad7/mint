@@ -30,6 +30,8 @@ typedef struct VM_Memory
 {
     int8_t* mem;
     Pointer* pointers;
+
+    char** argv;
 } VM_Memory;
 
 typedef struct VM_Core
@@ -53,9 +55,10 @@ typedef struct VM_Core
  *
  * @param data Raw executable data
  * @param vm Pointer to the virtual machine
+ * @param argv Arguments
  * @return ptrid_t Mint pointer to the main word
  */
-ptrid_t init_vm(int8_t data[], VM_Core *vm);
+ptrid_t init_vm(int8_t data[], VM_Core *vm, char **argv);
 
 /**
  * @brief Evaluates bytecode beginning from the given address until it reaches EOF
@@ -72,3 +75,23 @@ int eval(address_t address, VM_Core *vm);
  * @param vm Pointer to the virtual machine
  */
 void free_mem(VM_Core *vm);
+
+/**
+ * @brief Loads a value from memory.
+ * 
+ * @param ptr Pointer to a region in memory
+ * @param idx Index of the value
+ * @param ram Pointer to VM_Memory
+ * @return int32_t Retrieved value
+ */
+int32_t load_mem(ptrid_t ptr, uint16_t idx, VM_Memory *ram);
+
+/**
+ * @brief Stores a value in memory.
+ * 
+ * @param ptr Pointer to a region in memory
+ * @param idx Index to store the value at
+ * @param val Value
+ * @param ram Pointer to VM_Memory
+ */
+void store_mem(ptrid_t ptr, uint16_t idx, int32_t val, VM_Memory *ram);
