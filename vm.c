@@ -152,7 +152,10 @@ int eval(address_t address, VM_Core *vm)
                 while (cond_depth > 0) // Skip over the if block
                 {
                     int8_t op = get_mem(++address);
-                    if (op == IF) cond_depth++;
+                    if (op == PUSH8) address++;
+                    else if (op == PUSH16) address += 2;
+                    else if (op == PUSH32) address += 4;
+                    else if (op == IF) cond_depth++;
                     else if (op == ENDIF) cond_depth--;
                     else if (op == ELSE && cond_depth == 1) break;
                 }
@@ -179,7 +182,10 @@ int eval(address_t address, VM_Core *vm)
                 while (vm->loop_depth >= curr_loop_depth) // Ignore any possible nested loops
                 {
                     int8_t op = get_mem(++address);
-                    if (op == FOR || op == LOOP) vm->loop_depth++;
+                    if (op == PUSH8) address++;
+                    else if (op == PUSH16) address += 2;
+                    else if (op == PUSH32) address += 4;
+                    else if (op == FOR || op == LOOP) vm->loop_depth++;
                     else if (op == NEXT || op == REPEAT) vm->loop_depth--;
                 }
                 break;
