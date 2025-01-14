@@ -210,8 +210,6 @@ int eval(address_t address, VM_Core *vm)
             case SWAP:      { POP(a); POP(b); PUSH(a); PUSH(b); break; }
             case OVER:      { POP(a); POP(b); PUSH(b); PUSH(a); PUSH(b); break; }
             case ROT:       { POP(a); POP(b); POP(c); PUSH(b); PUSH(a); PUSH(c); break; }
-            case OUTINT:    { POP(v); printf("%d", v); break; }
-            case OUTCHAR:   { POP(c); printf("%c", c); break; }
             case ADD:       { POP(a); POP(b); PUSH(a+b); break; }
             case SUB:       { POP(a); POP(b); PUSH(b-a); break; }
             case MUL:       { POP(a); POP(b); PUSH(a*b); break; }
