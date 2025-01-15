@@ -78,7 +78,8 @@ ptrid_t init_vm(int8_t data[], VM_Core *vm, char **argv)
             int8_t tmp_size = data[i++];
             uint16_t size = c_to_s(tmp_size, data[i++]);
 
-            i += 2;
+            int8_t tmp_init_size = data[i++];
+            uint16_t init_size = c_to_s(tmp_init_size, data[i++]);
 
             int8_t tmp_id = data[i++];
             curr_ptr = c_to_s(tmp_id, data[i++]);
@@ -94,12 +95,10 @@ ptrid_t init_vm(int8_t data[], VM_Core *vm, char **argv)
 
             next_free_addr += size;
 
-            int j = 0;
-            while (data[i] != END)
+            for (int j = 0; j < init_size; j++)
             {
-                vm->ram.mem[vm->ram.pointers[curr_ptr].address + j++] = data[i++];
+                vm->ram.mem[vm->ram.pointers[curr_ptr].address + j] = data[i++];
             }
-            vm->ram.mem[vm->ram.pointers[curr_ptr].address + j] = END;
         }
         else i++;
     }

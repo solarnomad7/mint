@@ -15,10 +15,16 @@ int main(int argc, char **argv)
     switch (result)
     {
         case SEGMENTATION_FAULT:
-            printf("MINT: Segmentation fault\n");
+            printf("\nMINT: Segmentation fault\n");
             break;
         case MAX_RECURSION_DEPTH:
-            printf("MINT: Reached maximum recursion depth\n");
+            printf("\nMINT: Reached maximum recursion depth\n");
+            break;
+        case STACK_OVERFLOW:
+            printf("\nMINT: Stack overflow\n");
+            break;
+        case STACK_UNDERFLOW:
+            printf("\nMINT: Stack underflow\n");
             break;
     }
 
