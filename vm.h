@@ -30,8 +30,10 @@ typedef struct Pointer
 typedef struct VM_Memory
 {
     int8_t* mem;
-    int8_t* page;
     Pointer* pointers;
+
+    int8_t* page;
+    int32_t page_size;
 
     char** argv;
 } VM_Memory;

@@ -24,6 +24,10 @@ const uint16_t iPointerSizes[] =
     [PTR_TERMINAL_ARGS]     = 1,
     [PTR_TERMINAL_READC]    = 1,
     [PTR_TERMINAL_WRITEC]   = 1,
+    [PTR_FS_FN]             = 1,
+    [PTR_FS_PATH]           = 1,
+    [PTR_FS_SOURCE]         = 2,
+    [PTR_FS_DEST]           = 1,
 };
 
 const Type iPointerTypes[] = 
@@ -36,6 +40,10 @@ const Type iPointerTypes[] =
     [PTR_TERMINAL_ARGS]     = INT16,
     [PTR_TERMINAL_READC]    = INT8,
     [PTR_TERMINAL_WRITEC]   = INT8,
+    [PTR_FS_FN]             = INT8,
+    [PTR_FS_PATH]           = INT16,
+    [PTR_FS_SOURCE]         = INT32,
+    [PTR_FS_DEST]           = INT32,
 };
 
 ptrid_t init_vm(int8_t data[], VM_Core *vm, char **argv)
@@ -50,7 +58,8 @@ ptrid_t init_vm(int8_t data[], VM_Core *vm, char **argv)
 
     if ((vm->ram.mem = calloc(MEM_SIZE, sizeof(int8_t))) == NULL) return -1;
     if ((vm->ram.pointers = malloc(PTRS_SIZE * sizeof(Pointer))) == NULL) return -1;
-    if ((vm->ram.page = calloc(MEM_SIZE, sizeof(int8_t))) == NULL) return -1;
+    if ((vm->ram.page = calloc(PAGE_SIZE, sizeof(int8_t))) == NULL) return -1;
+    vm->ram.page_size = PAGE_SIZE;
 
     ptrid_t initial_ptr = c_to_s(data[6], data[7]);
     int num_labels = c_to_s(data[8], data[9]);
@@ -245,6 +254,7 @@ void handle_interfaces(VM_Memory* ram)
 {
     iterm_update(ram);
     ipage_update(ram);
+    ifs_update(ram);
 }
 
 int32_t load_mem(ptrid_t ptr, uint16_t idx, VM_Memory *ram)

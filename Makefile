@@ -2,8 +2,8 @@ CC := gcc
 CFLAGS := -Wall -Wextra -g
 BINARY := mint
 
-$(BINARY): main.o vm.o terminal.o page.o
-	$(CC) $(CFLAGS) page.o terminal.o vm.o main.o -o $(BINARY)
+$(BINARY): main.o vm.o terminal.o page.o fs.o
+	$(CC) $(CFLAGS) fs.o page.o terminal.o vm.o main.o -o $(BINARY)
 	rm -f *.o
 
 main.o: main.c
@@ -17,6 +17,9 @@ terminal.o: interfaces/terminal.c
 
 page.o: interfaces/page.c
 	$(CC) $(CFLAGS) -c interfaces/page.c -o page.o
+
+fs.o: interfaces/fs.c
+	$(CC) $(CLFAGS) -c interfaces/fs.c -o fs.o
 
 clean:
 	rm -f $(BINARY) *.o
