@@ -39,4 +39,5 @@ enum InterfaceFunctions
     FS_READP                = 4,
     FS_WRITEP               = 5,
     FS_APPENDP              = 6,
+    FS_FILELEN              = 7,
 };

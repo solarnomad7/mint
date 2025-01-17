@@ -1,5 +1,4 @@
 #include "interfaces.h"
-#include <stdio.h>
 
 void ipage_read(VM_Memory *ram);
 void ipage_write(VM_Memory *ram);
