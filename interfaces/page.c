@@ -1,4 +1,5 @@
 #include "interfaces.h"
+#include <stdio.h>
 
 void ipage_read(VM_Memory *ram);
 void ipage_write(VM_Memory *ram);
@@ -24,7 +25,7 @@ void ipage_read(VM_Memory *ram)
     {
         ram->mem[write_addr++] = ram->page[read_idx + i];
     }
-    store_mem(PTR_PAGE_FN, 1, 0, ram);
+    store_mem(PTR_PAGE_FN, 0, 0, ram);
 }
 
 void ipage_write(VM_Memory *ram)
@@ -37,5 +38,5 @@ void ipage_write(VM_Memory *ram)
     {
         ram->page[write_idx + i] = ram->mem[read_addr++];
     }
-    store_mem(PTR_PAGE_FN, 1, 0, ram);
+    store_mem(PTR_PAGE_FN, 0, 0, ram);
 }
