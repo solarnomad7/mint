@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "vm.h"
 #include "op_table.h"
@@ -242,6 +243,7 @@ int eval(address_t address, VM_Core *vm)
             case XOR:       { POP(a); POP(b); PUSH(a ^ b); break; }
             case SLEFT:     { POP(a); POP(b); PUSH(b << a); break; }
             case SRIGHT:    { POP(a); POP(b); PUSH(b >> a); break; }
+            case POW:       { POP(a); POP(b); PUSH(pow(b, a)); break; }
         }
         address++;
 

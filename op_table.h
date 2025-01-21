@@ -47,4 +47,5 @@ typedef enum Op
     XOR             = 0x6D,
     SLEFT           = 0x6E,
     SRIGHT          = 0x6F,
+    POW             = 0x70,
 } Op;

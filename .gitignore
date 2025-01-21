@@ -5,6 +5,7 @@
 *.code-workspace
 *.mint
 *.mx
+*.txt
 mint
 Makefile~
 .clangd
