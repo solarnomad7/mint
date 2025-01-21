@@ -244,6 +244,7 @@ int eval(address_t address, VM_Core *vm)
             case SLEFT:     { POP(a); POP(b); PUSH(b << a); break; }
             case SRIGHT:    { POP(a); POP(b); PUSH(b >> a); break; }
             case POW:       { POP(a); POP(b); PUSH(pow(b, a)); break; }
+            case ABS:       { POP(a); PUSH(abs(a)); break; }
         }
         address++;
 
