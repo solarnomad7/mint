@@ -46,9 +46,9 @@ typedef struct VM_Core
     int16_t sp;
     int16_t rp;
 
-    int32_t loop_ivals[4];
-    int32_t loop_maxvals[4];
-    address_t loop_addrs[4];
+    int32_t loop_ivals[8];
+    int32_t loop_maxvals[8];
+    address_t loop_addrs[8];
     int8_t loop_depth;
 
     VM_Memory ram;

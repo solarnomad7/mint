@@ -193,7 +193,7 @@ int eval(address_t address, VM_Core *vm)
                 else { address = vm->loop_addrs[vm->loop_depth]; continue; }
             }
             case ADDI:      { POP(i); vm->loop_ivals[vm->loop_depth] += i; break; }
-            case PUSHI:     { POP(i); PUSH(vm->loop_ivals[i]); break; }
+            case PUSHI:     { POP(i); PUSH(vm->loop_ivals[vm->loop_depth - i]); break; }
             case BREAK:     {
                 int curr_loop_depth = vm->loop_depth;
                 while (vm->loop_depth >= curr_loop_depth) // Ignore any possible nested loops
