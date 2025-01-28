@@ -127,6 +127,7 @@ ptrid_t init_vm(int8_t data[], VM_Core *vm, char **argv)
 int eval(address_t address, VM_Core *vm)
 {
     int halt = 0;
+    int i = 0;
     while (!halt)
     {
         switch (vm->ram.mem[address])
@@ -183,11 +184,10 @@ int eval(address_t address, VM_Core *vm)
             case REPEAT:    { address = vm->loop_addrs[vm->loop_depth]; continue; }
             case FOR:       {
                 vm->loop_addrs[++(vm->loop_depth)] = address + 1;
-                POP(end); vm->loop_maxvals[vm->loop_depth] = end + 1;
+                POP(end); vm->loop_maxvals[vm->loop_depth] = end;
                 POP(init); vm->loop_ivals[vm->loop_depth] = init;
                 break;
             }
-
             case NEXT:      {
                 if (vm->loop_ivals[vm->loop_depth] == vm->loop_maxvals[vm->loop_depth]) { vm->loop_depth--; break; }
                 else { address = vm->loop_addrs[vm->loop_depth]; continue; }
