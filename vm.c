@@ -186,14 +186,9 @@ int eval(address_t address, VM_Core *vm)
                 vm->loop_addrs[++(vm->loop_depth)] = address + 1;
                 POP(end); vm->loop_maxvals[vm->loop_depth] = end;
                 POP(init); vm->loop_ivals[vm->loop_depth] = init;
-                break;
+                
+                if (end != init) break; // If the initial and end value are equal, fall through to BREAK (kind of hacky?)
             }
-            case NEXT:      {
-                if (vm->loop_ivals[vm->loop_depth] == vm->loop_maxvals[vm->loop_depth]) { vm->loop_depth--; break; }
-                else { address = vm->loop_addrs[vm->loop_depth]; continue; }
-            }
-            case ADDI:      { POP(i); vm->loop_ivals[vm->loop_depth] += i; break; }
-            case PUSHI:     { POP(i); PUSH(vm->loop_ivals[vm->loop_depth - i]); break; }
             case BREAK:     {
                 int curr_loop_depth = vm->loop_depth;
                 while (vm->loop_depth >= curr_loop_depth) // Ignore any possible nested loops
@@ -207,6 +202,12 @@ int eval(address_t address, VM_Core *vm)
                 }
                 break;
             }
+            case NEXT:      {
+                if (vm->loop_ivals[vm->loop_depth] == vm->loop_maxvals[vm->loop_depth]) { vm->loop_depth--; break; }
+                else { address = vm->loop_addrs[vm->loop_depth]; continue; }
+            }
+            case ADDI:      { POP(i); vm->loop_ivals[vm->loop_depth] += i; break; }
+            case PUSHI:     { POP(i); PUSH(vm->loop_ivals[vm->loop_depth - i]); break; }
             case LOAD:      {
                 POP(i); POP(p);
                 if (vm->ram.pointers[p].size <= i) { return SEGMENTATION_FAULT; }
