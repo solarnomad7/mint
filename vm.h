@@ -3,12 +3,12 @@
 #include <stdint.h>
 
 #define STACK_SIZE  0x100
-#define MEM_SIZE    0x10000
+#define MEM_SIZE    0x100000
 #define PTRS_SIZE   0x200
 #define PAGE_SIZE   0x40000
 
 typedef uint32_t address_t;
-typedef int16_t ptrid_t;
+typedef int32_t ptrid_t;
 
 typedef enum Type { INT8 = 1, INT16 = 2, INT32 = 4 } Type;
 
@@ -23,7 +23,7 @@ typedef enum Error
 typedef struct Pointer
 {
     address_t address;
-    uint16_t size;
+    uint32_t size;
     Type type;
 } Pointer;
 

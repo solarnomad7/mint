@@ -35,14 +35,14 @@ const Type iPointerTypes[] =
 {
     [PTR_NULL]              = INT8,
     [PTR_PAGE_FN]           = INT8,
-    [PTR_PAGE_RWPTR]        = INT16,
+    [PTR_PAGE_RWPTR]        = INT32,
     [PTR_PAGE_RWSIZE]       = INT32,
     [PTR_TERMINAL_FN]       = INT8,
     [PTR_TERMINAL_ARGS]     = INT16,
     [PTR_TERMINAL_READC]    = INT8,
     [PTR_TERMINAL_WRITEC]   = INT8,
     [PTR_FS_FN]             = INT8,
-    [PTR_FS_PATH]           = INT16,
+    [PTR_FS_PATH]           = INT32,
     [PTR_FS_SOURCE]         = INT32,
     [PTR_FS_DEST]           = INT32,
 };
@@ -94,7 +94,9 @@ ptrid_t init_vm(int8_t data[], VM_Core *vm, char **argv)
             int8_t type = data[i++];
 
             int8_t tmp_size = data[i++];
-            uint16_t size = c_to_s(tmp_size, data[i++]);
+            int8_t tmp_size2 = data[i++];
+            int8_t tmp_size3 = data[i++];
+            uint32_t size = c_to_i(tmp_size, tmp_size2, tmp_size3, data[i++]);
 
             int8_t tmp_init_size = data[i++];
             uint16_t init_size = c_to_s(tmp_init_size, data[i++]);
