@@ -5,7 +5,6 @@
 #define STACK_SIZE  0x100
 #define MEM_SIZE    0x100000
 #define PTRS_SIZE   0x200
-#define PAGE_SIZE   0x40000
 
 typedef uint32_t address_t;
 typedef int32_t ptrid_t;
@@ -31,9 +30,6 @@ typedef struct VM_Memory
 {
     int8_t* mem;
     Pointer* pointers;
-
-    int8_t* page;
-    int32_t page_size;
 
     char** argv;
 } VM_Memory;
