@@ -6,6 +6,7 @@
 *.mint
 *.mx
 *.txt
+*.txt~
 mint
 Makefile~
 .clangd

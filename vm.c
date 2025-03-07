@@ -36,9 +36,9 @@ const Type iPointerTypes[] =
     [PTR_TERMINAL_READC]    = INT8,
     [PTR_TERMINAL_WRITEC]   = INT8,
     [PTR_FS_FN]             = INT8,
-    [PTR_FS_PATH]           = INT32,
-    [PTR_FS_SOURCE]         = INT32,
-    [PTR_FS_DEST]           = INT32,
+    [PTR_FS_PATH]           = INT16,
+    [PTR_FS_SOURCE]         = INT16,
+    [PTR_FS_DEST]           = INT16,
 };
 
 ptrid_t init_vm(int8_t data[], VM_Core *vm, char **argv)
