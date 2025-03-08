@@ -7,7 +7,7 @@
 #define PTRS_SIZE   0x200
 
 typedef uint32_t address_t;
-typedef int32_t ptrid_t;
+typedef uint16_t ptrid_t;
 
 typedef enum Type { INT8 = 1, INT16 = 2, INT32 = 4 } Type;
 
