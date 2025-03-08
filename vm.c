@@ -121,7 +121,6 @@ ptrid_t init_vm(int8_t data[], VM_Core *vm, char **argv)
 int eval(address_t address, VM_Core *vm)
 {
     int halt = 0;
-    int i = 0;
     while (!halt)
     {
         switch (vm->ram.mem[address])
@@ -204,20 +203,20 @@ int eval(address_t address, VM_Core *vm)
             case PUSHI:     { POP(i); PUSH(vm->loop_ivals[vm->loop_depth - i]); break; }
             case LOAD:      {
                 POP(i); POP(p);
-                if (vm->ram.pointers[p].size <= i) { return SEGMENTATION_FAULT; }
+                if (vm->ram.pointers[p].size <= (uint32_t)i) { return SEGMENTATION_FAULT; }
                 PUSH(load_mem(p, (uint16_t)i, &(vm->ram)));
                 break;
             }
             case STORE:     {
                 POP(v); POP(i); POP(p);
-                if (vm->ram.pointers[p].size <= i) { return 1; }
+                if (vm->ram.pointers[p].size <= (uint32_t)i) { return 1; }
                 store_mem(p, (uint16_t)i, v, &(vm->ram));
                 break;
             }
             case ADDR:      { POP(p); PUSH(vm->ram.pointers[p].address); break; }
             case SIZE:      { POP(p); PUSH(vm->ram.pointers[p].size); break; }
             case BYTES:     { POP(p); PUSH(vm->ram.pointers[p].type); break; }
-            case POP:       { POP(a); break; }
+            case POP:       { POP(_); break; }
             case DUP:       { PUSH(vm->stack[vm->sp-1]); break; }
             case SWAP:      { POP(a); POP(b); PUSH(a); PUSH(b); break; }
             case OVER:      { POP(a); POP(b); PUSH(b); PUSH(a); PUSH(b); break; }
